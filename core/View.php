@@ -15,12 +15,12 @@ final class View
         $this->directive();
     }
 
-    final public function render(string $template, array $data = [], array $mergeData = [])
+    final public function render(string $template, array $data = [], array $mergeData = []): void
     {
         echo $this->config($template, $data, $mergeData);
     }
-    
-    final public function unsetFlashSession(string $var)
+
+    final public function unsetFlashSession(string $var): void
     {
         foreach ($_SESSION as $key => $value) {
             if (str_contains($key, $var)) {
@@ -29,12 +29,12 @@ final class View
         }
     }
 
-    private function directive()
+    private function directive(): void
     {
         //
     }
 
-    private function config(string $template, array $data = [], array $mergeData = [])
+    private function config(string $template, array $data = [], array $mergeData = []): mixed
     {
         $file = "../resources/views/" . str_replace(".", "/", $template) . ".blade.php";
         if (file_exists($file)) {

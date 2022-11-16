@@ -9,6 +9,7 @@ $router = new Router();
 $router->get("/", WelcomeController::class, "index");
 
 /***************** WEB ROUTES WITH POST METHOD *****************/
+$router->post("/", WelcomeController::class, "json");
 
 /***************** API ROUTES WITH GET METHOD *****************/
 
