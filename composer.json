@@ -1,23 +1,27 @@
 {
-    "name": "speed/php-mvc",
-    "description": "PHP Model View Controller",
-    "type": "project",
-    "require": {
-        "jenssegers/blade": "1.4.0",
-        "phpmailer/phpmailer": "6.6.5"
+  "name": "speed/php-mvc",
+  "description": "PHP Model View Controller",
+  "type": "project",
+  "require": {
+    "jenssegers/blade": "1.4.0",
+    "phpmailer/phpmailer": "6.6.5"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/",
+      "Core\\": "core/"
     },
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "App\\": "app/",
-            "Core\\": "core/"
-        }
-    },
-    "authors": [
-        {
-            "name": "ngmthaq",
-            "email": "nguyenmanhthang2000.fb@gmail.com"
-        }
-    ],
-    "minimum-stability": "dev"
+    "files": [
+      "./utils/dev.php",
+      "./utils/runtime.php"
+    ]
+  },
+  "authors": [
+    {
+      "name": "ngmthaq",
+      "email": "nguyenmanhthang2000.fb@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev"
 }
