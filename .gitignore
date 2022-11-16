@@ -15,3 +15,6 @@ package-lock.json
 # Storage files
 /storage/**/*
 !/storage/.gitkeep
+
+# Enviroment files
+.env
