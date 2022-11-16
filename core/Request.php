@@ -63,7 +63,7 @@ final class Request
         return null;
     }
 
-    private function getQuery()
+    private function getQuery(): void
     {
         $query = [];
 
@@ -76,7 +76,7 @@ final class Request
         $this->queryData = $query;
     }
 
-    private function getInput()
+    private function getInput(): void
     {
         $input = [];
 
@@ -89,7 +89,7 @@ final class Request
         $this->inputData = $input;
     }
 
-    private function getCookie()
+    private function getCookie(): void
     {
         $cookie = [];
 
@@ -102,7 +102,7 @@ final class Request
         $this->cookieData = $cookie;
     }
 
-    private function getSession()
+    private function getSession(): void
     {
         $session = [];
 
@@ -115,7 +115,7 @@ final class Request
         $this->sessionData = $session;
     }
 
-    private function getServer()
+    private function getServer(): void
     {
         $server = [];
 
@@ -128,7 +128,7 @@ final class Request
         $this->serverData = $server;
     }
 
-    private function getHeaders()
+    private function getHeaders(): void
     {
         $headers = [];
         foreach ($_SERVER as $key => $value) {

@@ -3,24 +3,24 @@
 use Core\Response;
 use Core\View;
 
-function response()
+function response(): Response
 {
     return new Response();
 }
 
-function view(string $template, array $data = [], array $mergeData = [])
+function view(string $template, array $data = [], array $mergeData = []): mixed
 {
     $view = new View();
     return $view->render($template, $data, $mergeData);
 }
 
-function unsetFlashSession($key)
+function unsetFlashSession($key): void
 {
     $view = new View();
     $view->unsetFlashSession($key);
 }
 
-function assets($path)
+function assets($path): string
 {
     return "./" . $path . "?v=" . time();
 }

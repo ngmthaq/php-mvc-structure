@@ -45,7 +45,7 @@ final class App
         }
     }
 
-    private function detectErrorResponse($uri, $method)
+    private function detectErrorResponse($uri, $method): void
     {
         $anotherMethod = array_filter($this->routes, function ($m) use ($method) {
             return $m !== $method;
