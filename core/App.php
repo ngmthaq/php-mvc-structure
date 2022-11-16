@@ -43,8 +43,8 @@ final class App
                 return;
             }
         } catch (\Throwable $th) {
-            Console::log("SERVER INTERNAL ERROR");
-            Console::log($th->getMessage());
+            Console::error("SERVER INTERNAL ERROR");
+            Console::error($th->getMessage());
         }
     }
 
@@ -57,12 +57,12 @@ final class App
         if (count($anotherMethod) > 0) {
             $anotherRoutes = $this->routes[array_key_first($anotherMethod)];
             if (array_key_exists($uri, $anotherRoutes)) {
-                Console::log("METHOD NOT ALLOWED");
+                Console::error("METHOD NOT ALLOWED");
             } else {
-                Console::log("NOT FOUND");
+                Console::error("NOT FOUND");
             }
         } else {
-            Console::log("NOT FOUND");
+            Console::error("NOT FOUND");
         }
     }
 }
