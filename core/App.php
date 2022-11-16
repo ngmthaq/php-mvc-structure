@@ -6,6 +6,8 @@ use App\Helpers\Console;
 
 final class App
 {
+    public const DIR_NAME = "/php-mvc";
+
     private Request $req;
     private array $routes;
 
@@ -19,7 +21,8 @@ final class App
     {
         try {
             $method = $_SERVER["REQUEST_METHOD"];
-            $uri = explode("?", $_SERVER["REQUEST_URI"])[0];
+            $uri = isLocalHost() ? str_replace(self::DIR_NAME, "", $_SERVER["REQUEST_URI"]) : $_SERVER["REQUEST_URI"];
+            $uri = explode("?", $uri)[0];
             $routes = null;
 
             if (array_key_exists($method, $this->routes)) {
@@ -52,7 +55,6 @@ final class App
         }, ARRAY_FILTER_USE_KEY);
 
         if (count($anotherMethod) > 0) {
-            Console::log($anotherMethod);
             $anotherRoutes = $this->routes[array_key_first($anotherMethod)];
             if (array_key_exists($uri, $anotherRoutes)) {
                 Console::log("METHOD NOT ALLOWED");
