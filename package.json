@@ -1,0 +1,32 @@
+{
+  "name": "php-mvc",
+  "version": "1.0.0",
+  "description": "PHP Model View Controller",
+  "main": "public/js/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "scss": "npx sass resources/scss/index.scss public/css/style.css",
+    "scss:watch": "npx sass resources/scss/index.scss public/css/style.css --watch",
+    "webpack:build": "npx webpack --config webpack.config.js",
+    "webpack:watch": "npx webpack --config webpack.config.js --watch",
+    "webpack:prod": "npx webpack --config webpack.prod.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngmthaq/php-mvc.git"
+  },
+  "keywords": [
+    "PHP"
+  ],
+  "author": "ngmthaq",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ngmthaq/php-mvc/issues"
+  },
+  "homepage": "https://github.com/ngmthaq/php-mvc#readme",
+  "devDependencies": {
+    "sass": "1.56.1",
+    "webpack": "5.75.0",
+    "webpack-cli": "4.10.0"
+  }
+}

@@ -1,0 +1,17 @@
+# Composer package
+/vendor
+
+# NPM package
+/node_modules
+
+# Lock files
+composer.lock
+package-lock.json
+
+# Public files
+/public/css
+/public/js
+
+# Storage files
+/storage/**/*
+!/storage/.gitkeep
