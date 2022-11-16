@@ -14,7 +14,6 @@ class WelcomeController extends Controller
 
     public function index()
     {
-        echo "Thang";
-        Console::log($this->req->headers());
+        return view("welcome");
     }
 }
