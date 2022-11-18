@@ -17,39 +17,61 @@ final class App
         $this->routes = $router->getRoutes();
     }
 
-    final public function run(): void
+    final public function run(): mixed
     {
         try {
-            $method = $_SERVER["REQUEST_METHOD"];
-            $uri = isLocalHost() ? str_replace(self::DIR_NAME, "", $_SERVER["REQUEST_URI"]) : $_SERVER["REQUEST_URI"];
-            $uri = explode("?", $uri)[0];
-            $routes = null;
-
-            if (array_key_exists($method, $this->routes)) {
-                $routes = $this->routes[$method];
+            if ($_ENV["APP_STATUS"] === "maintain") {
+                $responseType = $this->req->headers("Response-Type");
+                if (isset($responseType) && $responseType === "application/json") {
+                    return response()->json([
+                        "message" => "Service Unavailable",
+                    ], Response::STATUS_SERVICE_UNAVAILABLE);
+                } else {
+                    Console::error("Service Unavailable");
+                    http_response_code(Response::STATUS_SERVICE_UNAVAILABLE);
+                    return view("errors._503");
+                }
             } else {
-                $this->detectErrorResponse($uri, $method);
-                return;
-            }
+                $method = $_SERVER["REQUEST_METHOD"];
+                $uri = isLocalHost() ? str_replace(self::DIR_NAME, "", $_SERVER["REQUEST_URI"]) : $_SERVER["REQUEST_URI"];
+                $uri = explode("?", $uri)[0];
+                $routes = null;
 
-            if (isset($routes) && array_key_exists($uri, $routes)) {
-                $configs = $routes[$uri];
-                $controller = $configs["controller"];
-                $action = $configs["action"];
-                $instance = new $controller($this->req);
-                $instance->$action();
-            } else {
-                $this->detectErrorResponse($uri, $method);
-                return;
+                if (array_key_exists($method, $this->routes)) {
+                    $routes = $this->routes[$method];
+                } else {
+                    return $this->detectErrorResponse($uri, $method);
+                }
+
+                if (isset($routes) && array_key_exists($uri, $routes)) {
+                    $configs = $routes[$uri];
+                    $controller = $configs["controller"];
+                    $action = $configs["action"];
+                    $instance = new $controller($this->req);
+                    return $instance->$action();
+                } else {
+                    return $this->detectErrorResponse($uri, $method);
+                }
             }
         } catch (\Throwable $th) {
-            Console::error("SERVER INTERNAL ERROR");
-            Console::error($th->getMessage());
+            $responseType = $this->req->headers("Response-Type");
+            if (isset($responseType) && $responseType === "application/json") {
+                return response()->json([
+                    "message" => "Server Internal Error",
+                    "detail" => $th->getMessage(),
+                ], Response::STATUS_INTERNAL_SERVER_ERROR);
+            } else {
+                Console::error("Server Internal Error");
+                Console::error($th->getMessage());
+                http_response_code(Response::STATUS_INTERNAL_SERVER_ERROR);
+                return view("errors._500");
+            }
         }
     }
 
-    private function detectErrorResponse($uri, $method): void
+    private function detectErrorResponse($uri, $method): mixed
     {
+        $responseType = $this->req->headers("Response-Type");
         $anotherMethod = array_filter($this->routes, function ($m) use ($method) {
             return $m !== $method;
         }, ARRAY_FILTER_USE_KEY);
@@ -57,12 +79,20 @@ final class App
         if (count($anotherMethod) > 0) {
             $anotherRoutes = $this->routes[array_key_first($anotherMethod)];
             if (array_key_exists($uri, $anotherRoutes)) {
-                Console::error("METHOD NOT ALLOWED");
+                return response()->json(["message" => "Method not allowed"], Response::STATUS_METHOD_NOT_ALLOWED);
             } else {
-                Console::error("NOT FOUND");
+                if (isset($responseType) && $responseType === "application/json") {
+                    return response()->json(["message" => "Not found"], Response::STATUS_NOT_FOUND);
+                } else {
+                    Console::error("Not Found");
+                    http_response_code(Response::STATUS_NOT_FOUND);
+                    return view("errors._404");
+                }
             }
         } else {
-            Console::error("NOT FOUND");
+            Console::error("Not Found");
+            http_response_code(Response::STATUS_NOT_FOUND);
+            return view("errors._404");
         }
     }
 }
