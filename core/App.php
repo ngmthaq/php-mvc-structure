@@ -3,6 +3,7 @@
 namespace Core;
 
 use App\Helpers\Console;
+use App\Helpers\Logger;
 
 final class App
 {
@@ -54,15 +55,17 @@ final class App
                 }
             }
         } catch (\Throwable $th) {
+            $errorContent = $th->getMessage() . PHP_EOL . "# " . $th->getFile() . "(" . $th->getLine() . ")";
+            Logger::write("error", $errorContent);
             $responseType = $this->req->headers("Response-Type");
             if (isset($responseType) && $responseType === "application/json") {
                 return response()->json([
                     "message" => "Server Internal Error",
-                    "detail" => $th->getMessage(),
+                    "detail" => $_ENV["APP_ENV"] === "production" ? "" : $th->getMessage(),
                 ], Response::STATUS_INTERNAL_SERVER_ERROR);
             } else {
                 Console::error("Server Internal Error");
-                Console::error($th->getMessage());
+                if ($_ENV["APP_ENV"] !== "production") Console::error($th->getMessage());
                 http_response_code(Response::STATUS_INTERNAL_SERVER_ERROR);
                 return view("errors._500");
             }
