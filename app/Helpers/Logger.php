@@ -6,7 +6,7 @@ final class Logger
 {
     public const DIR = "../storage/logs";
 
-    public static function write(string $fileName, string $content)
+    final public static function write(string $fileName, string $content)
     {
         $date = gmdate("Y-m-d");
         $time = "[" . gmdate("H:i:s") . " UTC] ";
