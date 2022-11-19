@@ -43,4 +43,9 @@ final class View
             throw new Exception("View not found");
         }
     }
+
+    final public function getContent(string $template, array $data = [], array $mergeData = [])
+    {
+        return $this->config($template, $data, $mergeData);
+    }
 }
